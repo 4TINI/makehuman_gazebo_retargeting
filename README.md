@@ -7,25 +7,6 @@
 </div>
 
 
-To spawn the camera:
-```bash
-roslaunch generic_gazebo_camera_plugin spawn_camera.launch
-```
-
-| Argument | Default | Values | Description |
-| ---| --- | --- | --- |
-| `world_frame` | world |  |  |
-| `camera_name` | camera |  |  |
-| `camera_frame` | $(arg camera_name)_base_link |  |  |
-| `x` | 0 | double (meters) |  |
-| `y` | 0 | double (meters) |  |
-| `z` | 0 | double (meters) |  |
-| `roll` | 0 | double (rad) |  |
-| `pitch` | 0 | double (rad) |  |
-| `yaw` | 0 | double (rad) |  |
-| `model_path` |  |  |  |
-| `params_path` |  |  |  |
-
 
 
 
