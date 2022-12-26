@@ -1,0 +1,60 @@
+<launch>
+
+    <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find makehuman_gazebo_retarget)/models"/>
+    <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find makehuman_gazebo_retarget)/models"/>
+
+    <!-- Actor args -->
+    <arg name="actor_name" default="demo_actor"/>
+    <arg name="actor_filename" default="jacks"/>
+    <arg name="actor_path" default="$(find makehuman_gazebo_retarget)/models/$(arg actor_name)/$(arg actor_filename).dae"/>
+    <arg name="actor_init_x" default="0"/>
+    <arg name="actor_init_y" default="0"/>
+    <arg name="actor_init_z" default="0"/>
+    <arg name="actor_init_roll" default="0"/>
+    <arg name="actor_init_pitch" default="0"/>
+    <arg name="actor_init_yaw" default="0"/>
+    <arg name="actor_collision_file" default="$(find makehuman_gazebo_retarget)/models/$(arg actor_name)/collisions.sdf"/>
+
+    <!-- Gazebo args -->
+    <arg name="gazebo_world_name" default="$(find makehuman_gazebo_retarget)/worlds/chessboard.world"/>
+    <arg name="launch_gazebo_gui" default="true"/>
+
+    <!-- Rviz args -->
+    <arg name="launch_rviz" default="false"/>
+    <arg name="rviz_config_file" default="$(find makehuman_gazebo_retarget)/rviz/demo_actor.rviz"/>
+
+    <!-- Spawn model -->
+    <node name="actor_spawner" pkg="makehuman_gazebo_retarget" type="spawn_actor.py" output="screen">
+        <param name="actor_name" value="$(arg actor_name)"/>
+        <param name="actor_path" value="$(arg actor_path)"/>
+        <param name="actor_init_x" value="$(arg actor_init_x)"/>
+        <param name="actor_init_y" value="$(arg actor_init_y)"/>
+        <param name="actor_init_z" value="$(arg actor_init_z)"/>
+        <param name="actor_init_roll" value="$(arg actor_init_roll)"/>
+        <param name="actor_init_pitch" value="$(arg actor_init_pitch)"/>
+        <param name="actor_init_yaw" value="$(arg actor_init_yaw)"/>
+        <param name="collision_file" value="$(arg actor_collision_file)"/>
+    </node>
+    <!-- <node pkg="gazebo_ros" type="spawn_model" name="actor1" args="-sdf -file /home/lfortini/ros/catkin_ws/src/makehuman_gazebo_retarget/models/demo_actor/model.sdf -model spawn_model"/> -->
+
+    <!-- Launch ground-truth node -->
+    <node name="gazebo_model_tf_publisher" pkg="makehuman_gazebo_retarget" type="gazebo_model_tf_publisher.py">
+        <param name="model_name" value="$(arg actor_name)"/>
+        <param name="reference_frame" value="world"/>
+        <param name="publishing_rate" value="30"/>
+    </node>
+
+    <!-- Launch Gazebo -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg gazebo_world_name)"/>
+        <arg name="debug" value="true" />
+        <arg name="verbose" value="true" />
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="gui" value="$(arg launch_gazebo_gui)"/>     
+    </include>
+
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(arg rviz_config_file)" if="$(arg launch_rviz)"/>
+    
+</launch>

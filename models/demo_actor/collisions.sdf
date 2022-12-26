@@ -1,0 +1,18 @@
+    <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+      <scaling collision="Hips_RightHip_collision" scale="0.001 0.001 0.001"/>
+      <scaling collision="RightHip_RightKnee_collision" scale="8.0 8.0 1.0"/>
+      <scaling collision="RightKnee_RightAnkle_collision" scale="8.0 8.0 1.0"/>
+      <scaling collision="RightAnkle_RightToe_collision" scale="4.0 4.0 1.5"/>
+      <scaling collision="Hips_LeftHip_collision" scale="0.001 0.001 0.001"/>
+      <scaling collision="LeftHip_LeftKnee_collision" scale="8.0 8.0 1.0"/>
+      <scaling collision="LeftKnee_LeftAnkle_collision" scale="8.0 8.0 1.0"/>
+      <scaling collision="LeftAnkle_LeftToe_collision" scale="4.0 4.0 1.5"/>
+      <scaling collision="Hips_Spine_collision" scale="0.001 0.001 0.001"/>
+      <scaling collision="Spine_Spine1_collision" scale="14.0 18.0 4.0" pose="0.05 0 0.1 0 -0.2 0"/>
+      <scaling collision="Spine1_Spine2_collision" scale="0.001 0.001 0.001"/>
+      <scaling collision="Neck_Head_collision" scale="10.0 10.0 2" pose="0 0 0.1 0 0 0"/>
+      <scaling collision="RightShoulder_RightElbow_collision" scale="5.0 5.0 1.0"/>
+      <scaling collision="RightElbow_RightWrist_collision" scale="5.0 5.0 1.0"/>
+      <scaling collision="LeftShoulder_LeftElbow_collision" scale="5.0 5.0 1.0"/>
+      <scaling collision="LeftElbow_LeftWrist_collision" scale="5.0 5.0 1.0"/>
+    </plugin>
