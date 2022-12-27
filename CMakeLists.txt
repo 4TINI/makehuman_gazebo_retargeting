@@ -28,6 +28,8 @@ include_directories(
 link_directories(${GAZEBO_LIBRARY_DIRS}  ${catkin_LIBRARY_DIRS} ${tiago_public_DIRS})
 include_directories(include ${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS} )
 
+catkin_python_setup()
+
 #############
 ## Install ##
 #############

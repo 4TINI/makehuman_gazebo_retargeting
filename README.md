@@ -22,3 +22,4 @@ sudo cp libActorCollisionsPlugin.so /usr/lib/x86_64-linux-gnu/gazebo-9/plugins
 
 collisioni funzionano solo con debug mode on. no nso perchè
 
+controlla in retarget gli fps con lìoptitrack

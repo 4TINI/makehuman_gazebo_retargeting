@@ -42,13 +42,11 @@ void ActorCollisionsPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   std::map<std::string, ignition::math::Vector3d> scaling;
   std::map<std::string, ignition::math::Pose3d> offsets;
 
-   ROS_INFO ("Loading Gazebo Actor collision Plugin");
-   std::cout << "SUCAAAAAAAAAAAAAAAAAA\n";
+  ROS_INFO ("Loading Gazebo Actor collision Plugin");
 
   // Read in the collision scaling factors, if present
   if (_sdf->HasElement("scaling"))
   {
-    std::cout << "SUCAAAAAAAAAAAAAAAAAA\n";
 
     auto elem = _sdf->GetElement("scaling");
     while (elem)
@@ -73,7 +71,6 @@ void ActorCollisionsPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         offsets[name] = pose;
       }
       elem = elem->GetNextElement("scaling");
-      std::cout << "SUCAAAAAAAAAAAAAAAAAA\n";
 
     }
   }
@@ -109,7 +106,6 @@ void ActorCollisionsPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
       }
     }
   }
-  std::cout << "SUCAAAAAAAAAAAAAAAAAA\n";
 
   ROS_INFO("Gazebo Actor collision Plugin loaded.");
 

@@ -5,7 +5,7 @@
 
     <!-- Actor args -->
     <arg name="actor_name" default="demo_actor"/>
-    <arg name="actor_filename" default="jacks"/>
+    <arg name="actor_filename" default="running"/>
     <arg name="actor_path" default="$(find makehuman_gazebo_retarget)/models/$(arg actor_name)/$(arg actor_filename).dae"/>
     <arg name="actor_init_x" default="0"/>
     <arg name="actor_init_y" default="0"/>
