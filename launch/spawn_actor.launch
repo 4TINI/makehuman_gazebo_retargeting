@@ -24,7 +24,7 @@
     <arg name="rviz_config_file" default="$(find makehuman_gazebo_retarget)/rviz/demo_actor.rviz"/>
 
     <!-- Spawn model -->
-    <node name="actor_spawner" pkg="makehuman_gazebo_retarget" type="spawn_actor.py" output="screen">
+    <node name="actor_spawner" pkg="makehuman_gazebo_retarget" type="spawn_actor.py">
         <param name="actor_name" value="$(arg actor_name)"/>
         <param name="actor_path" value="$(arg actor_path)"/>
         <param name="actor_init_x" value="$(arg actor_init_x)"/>
