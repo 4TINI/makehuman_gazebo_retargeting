@@ -5,6 +5,7 @@ import os
 import collada
 import traceback
 import shutil
+import pathlib
 
 argv = sys.argv
 argv = argv[argv.index("--") + 1:]  # get all args after "--"
@@ -19,24 +20,27 @@ model_path = '../../models/' + mhx2_file_name
 textures_destination = model_path + '/textures/'
 collada_filepath = model_path + '/' + output_name+'.dae'
 
-
 def main():
     bpy.ops.preferences.addon_refresh()
-    bpy.ops.import_scene.makehuman_mhx2(filepath=mhx2_file_path)
     
-    D = bpy.data
-    model_name = D.collections[0].name
-
-    bpy.context.view_layer.objects.active = bpy.data.objects[model_name].select_set(True)
-
-    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-    bpy.ops.import_anim.bvh(filepath=bvh_file_path, use_fps_scale=False, update_scene_duration=True, axis_forward = '-Z', axis_up = 'Y')
+    
+    file_extension = pathlib.Path(bvh_file_path).suffix
+    print(bvh_file_path)
+    print(file_extension)
+    
+    if file_extension == '.bvh':
+        bpy.ops.import_anim.bvh(filepath=bvh_file_path, use_fps_scale=True, update_scene_duration=True, axis_forward = '-Z', axis_up = 'Y')
+    elif file_extension == '.fbx':
+        print("hey")
+        bpy.ops.import_scene.fbx(filepath=bvh_file_path)
     
     sel = bpy.context.selected_objects
     animation_name = sel[0].name
 
-    bpy.context.view_layer.objects.active = bpy.data.objects[animation_name].select_set(True)
-    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    bpy.ops.import_scene.makehuman_mhx2(filepath=mhx2_file_path)
+    
+    D = bpy.data
+    model_name = D.collections[0].name
 
     bpy.context.scene.rsl_retargeting_armature_source = bpy.data.objects[animation_name]
     bpy.context.scene.rsl_retargeting_armature_target = bpy.data.objects[model_name]
@@ -81,9 +85,7 @@ def main():
     		    # Move all png files
                 shutil.move(model_path + '/' + file_name, textures_destination)
             else:
-                os.remove(model_path + '/' + file_name) 
-                
+                os.remove(model_path + '/' + file_name)         
 
 if __name__ == "__main__":
-    main()
-    
+    main()  
