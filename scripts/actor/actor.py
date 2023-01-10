@@ -5,20 +5,19 @@ from gazebo_msgs.srv import DeleteModel
 
 class GazeboActor:
      
-    def __init__(self, actor_name, anim_name, path, pose, collision_file):
+    def __init__(self, actor_name, path, pose, collision_file, loop_flag):
         self.actor_name = actor_name
-        self.anim_name = anim_name
-        self.collision_file = anim_name
         self.path = path    
         self.pose = ' '.join(str(e) for e in pose)
         self.collision_file = collision_file
+        self.loop_flag = loop_flag
         
         # self.model_xml_text = "<?xml version=\"1.0\" ?><sdf version=\"1.6\"><world name=\"default\"><actor name=\""+self.actor_name+"\"><skin><filename>"+self.path+"</filename></skin><animation name=\""+self.anim_name+"\"><filename>"+self.path+"</filename></animation><script><trajectory id=\"0\" type=\"falling\"><waypoint><time>100</time><pose>"+self.pose+"</pose></waypoint></trajectory></script></actor></world></sdf>"
         # self.model_xml_text = "<?xml version=\"1.0\" ?><sdf version=\"1.6\"><world name=\"default\"><actor name=\""+self.actor_name+"\"><skin><filename>"+self.path+"</filename></skin><animation name=\""+self.anim_name+"\"><filename>"+self.path+"</filename><scale>1.000000</scale><interpolate_x>true</interpolate_x></animation></actor></world></sdf>"
         f = open(self.collision_file,'r')
         sdff = f.read()
         
-        self.model_xml_text = "<?xml version=\"1.0\" ?><sdf version=\"1.6\"><actor name=\""+self.actor_name+"\">"+sdff+"<skin><filename>"+self.path+"</filename></skin></actor></sdf>"
+        self.model_xml_text = "<?xml version=\"1.0\" ?><sdf version=\"1.6\"><actor name=\""+self.actor_name+"\">"+sdff+"<skin><filename>"+self.path+"</filename></skin><script><loop>"+str(self.loop_flag)+"</loop></script></actor></sdf>"
     
     def spawn_actor(self):
 
