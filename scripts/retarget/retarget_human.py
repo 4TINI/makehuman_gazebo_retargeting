@@ -6,6 +6,7 @@ import collada
 import traceback
 import shutil
 import pathlib
+import math
 
 argv = sys.argv
 argv = argv[argv.index("--") + 1:]  # get all args after "--"
@@ -20,19 +21,39 @@ model_path = '../../models/' + mhx2_file_name
 textures_destination = model_path + '/textures/'
 collada_filepath = model_path + '/' + output_name+'.dae'
 
+# get keyframes of object list
+def get_keyframes(obj_list):
+    keyframes = []
+    for obj in obj_list:
+        anim = obj.animation_data
+        if anim is not None and anim.action is not None:
+            for fcu in anim.action.fcurves:
+                for keyframe in fcu.keyframe_points:
+                    x, y = keyframe.co
+                    if x not in keyframes:
+                        keyframes.append((math.ceil(x)))
+    return keyframes
+
 def main():
     bpy.ops.preferences.addon_refresh()
     
-    
     file_extension = pathlib.Path(bvh_file_path).suffix
-    print(bvh_file_path)
-    print(file_extension)
     
     if file_extension == '.bvh':
         bpy.ops.import_anim.bvh(filepath=bvh_file_path, use_fps_scale=True, update_scene_duration=True, axis_forward = '-Z', axis_up = 'Y')
     elif file_extension == '.fbx':
-        print("hey")
         bpy.ops.import_scene.fbx(filepath=bvh_file_path)
+        selection = bpy.context.selected_objects
+        # get all frames with assigned keyframes
+        keys = get_keyframes(selection)
+        
+        # get the current scene
+        scn = bpy.context.scene 
+        # assign new starting frame
+        scn.frame_start = keys[0]
+
+        # assign new end frame
+        scn.frame_end = keys[-1]
     
     sel = bpy.context.selected_objects
     animation_name = sel[0].name
@@ -51,7 +72,6 @@ def main():
     bpy.ops.object.delete()
     
     for o in bpy.context.scene.objects:
-        print(o)
         if o.type == 'MESH':
             for material in o.material_slots:
                 bpy.data.materials[material.name].node_tree.nodes["Principled BSDF"].inputs[19].default_value = (0.5, 0.5, 0.5, 1)
