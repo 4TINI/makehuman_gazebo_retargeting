@@ -17,7 +17,10 @@ class GazeboActor:
         f = open(self.collision_file,'r')
         sdff = f.read()
         
+        # self.model_xml_text = "<?xml version=\"1.0\" ?><sdf version=\"1.6\"><world name=\"default\"><actor name=\""+self.actor_name+"\"><skin><filename>"+self.path+"</filename></skin><animation name=\""+self.anim_name+"\"><filename>"+self.path+"</filename></animation><script><trajectory id=\"0\" type=\"falling\"><waypoint><time>100</time><pose>"+self.pose+"</pose></waypoint></trajectory></script></actor></world></sdf>"
+        # self.model_xml_text = "<?xml version=\"1.0\" ?><sdf version=\"1.6\"><actor name=\""+self.actor_name+"\">"+sdff+"<skin><filename>"+self.path+"</filename></skin><script><loop>"+str(self.loop_flag)+"</loop><trajectory id=\"0\" type=\"falling\"><waypoint><time>100</time><pose>"+self.pose+"</pose></waypoint></trajectory></script></actor></sdf>"
         self.model_xml_text = "<?xml version=\"1.0\" ?><sdf version=\"1.6\"><actor name=\""+self.actor_name+"\">"+sdff+"<skin><filename>"+self.path+"</filename></skin><script><loop>"+str(self.loop_flag)+"</loop></script></actor></sdf>"
+
     
     def spawn_actor(self):
 

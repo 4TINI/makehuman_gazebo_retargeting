@@ -2,10 +2,18 @@
 
 A ROS package to generate, retarget human animation and spawn them in a Gazebo simulation environment. 
 
-<div align="center">
+<!-- <div align="center">
     <img src=".github/media/motive.jpg" height = 200>
     <img src=".github/media/collisions1.jpg" height = 200>
+</div> -->
+
+<div align="center">
+    <img src=".github/media/motive.gif" height = 150>
+    <img src=".github/media/gazebo.gif" height = 150>
+    <img src=".github/media/rviz.gif" height = 150>
 </div>
+
+
 
 ## Prerequities
 - Makehuman
