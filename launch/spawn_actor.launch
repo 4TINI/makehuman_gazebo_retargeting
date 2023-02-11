@@ -27,28 +27,36 @@
     <arg name="launch_rviz" default="true"/>
     <arg name="rviz_config_file" default="$(find makehuman_gazebo_retarget)/rviz/demo_actor.rviz"/>
 
-    <!-- Spawn model -->
-    <node name="actor_spawner" pkg="makehuman_gazebo_retarget" type="spawn_actor.py" output="screen">
-        <param name="actor_name" value="$(arg actor_name)"/>
-        <param name="actor_number" value="$(arg actor_number)"/>
-        <param name="actor_path" value="$(arg actor_path)"/>
-        <param name="actor_init_x" value="$(arg actor_init_x)"/>
-        <param name="actor_init_y" value="$(arg actor_init_y)"/>
-        <param name="actor_init_z" value="$(arg actor_init_z)"/>
-        <param name="actor_init_roll" value="$(arg actor_init_roll)"/>
-        <param name="actor_init_pitch" value="$(arg actor_init_pitch)"/>
-        <param name="actor_init_yaw" value="$(arg actor_init_yaw)"/>
-        <param name="collision_file" value="$(arg actor_collision_file)"/>
-        <param name="animation_loop" value="$(arg animation_loop)"/>
-    </node>
+    <group ns="$(arg actor_name)$(arg actor_number)">    
+        <!-- Spawn model -->
+        <node name="actor_spawner" pkg="makehuman_gazebo_retarget" type="spawn_actor.py">
+            <param name="actor_name" value="$(arg actor_name)"/>
+            <param name="actor_number" value="$(arg actor_number)"/>
+            <param name="actor_path" value="$(arg actor_path)"/>
+            <param name="actor_init_x" value="$(arg actor_init_x)"/>
+            <param name="actor_init_y" value="$(arg actor_init_y)"/>
+            <param name="actor_init_z" value="$(arg actor_init_z)"/>
+            <param name="actor_init_roll" value="$(arg actor_init_roll)"/>
+            <param name="actor_init_pitch" value="$(arg actor_init_pitch)"/>
+            <param name="actor_init_yaw" value="$(arg actor_init_yaw)"/>
+            <param name="collision_file" value="$(arg actor_collision_file)"/>
+            <param name="animation_loop" value="$(arg animation_loop)"/>
+        </node>
 
-    <!-- Launch ground-truth node -->
-    <node name="gazebo_model_tf_publisher" pkg="makehuman_gazebo_retarget" type="gazebo_model_tf_publisher.py" ns="$(arg actor_number)">
-        <param name="model_name" value="$(arg actor_name)$(arg actor_number)"/>
-        <param name="reference_frame" value="world"/>
-        <param name="publishing_rate" value="30"/>
-    </node>
+        <!-- Launch ground-truth node -->
+        <node name="gazebo_model_tf_publisher" pkg="makehuman_gazebo_retarget" type="gazebo_model_tf_publisher.py">
+            <param name="model_name" value="$(arg actor_name)$(arg actor_number)"/>
+            <param name="reference_frame" value="world"/>
+            <param name="publishing_rate" value="100"/>
+        </node>
 
+            <!-- Launch ground-truth node -->
+        <node name="visualizer" pkg="makehuman_gazebo_retarget" type="skeleton_visualizer.py">
+            <param name="model_name" value="$(arg actor_name)$(arg actor_number)"/>
+            <param name="reference_frame" value="world"/>
+            <param name="publishing_rate" value="100"/>
+        </node>
+    </group>
     <!-- Launch Gazebo -->
     <include if="$(eval launch_gazebo)" file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg gazebo_world_name)"/>
