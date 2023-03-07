@@ -28,6 +28,9 @@ if __name__ == '__main__':
 
         rate = rospy.Rate(publishing_rate)
 
+        prev_broadcast_time = rospy.Time.now().to_sec()
+        broadcast_time_sleep = 0.001
+
         # Wait for ros time now
         while not rospy.Time.now().to_sec() and not rospy.is_shutdown():
             rate.sleep()
@@ -37,18 +40,21 @@ if __name__ == '__main__':
         while not rospy.is_shutdown():
             actual_time = rospy.Time.now().to_sec()
             if (actual_time - gazebo_links_receiving_time) < gazebo_links_timeout:
-                for link_cnt, link_name in enumerate(gazebo_links.name):
-                    if model_name == link_name.rpartition('::')[0]:
-                        transform_stamped = geometry_msgs.msg.TransformStamped()
-                        transform_stamped.header.stamp = rospy.Time.now()
-                        transform_stamped.header.frame_id = reference_frame
-                        transform_stamped.child_frame_id = link_name.replace("::", "_")
-                        transform_stamped.transform.translation.x = gazebo_links.pose[link_cnt].position.x
-                        transform_stamped.transform.translation.y = gazebo_links.pose[link_cnt].position.y
-                        transform_stamped.transform.translation.z = gazebo_links.pose[link_cnt].position.z
-                        transform_stamped.transform.rotation = gazebo_links.pose[link_cnt].orientation
-                        
-                        tf_broadcaster.sendTransform(transform_stamped)
+                if (actual_time - prev_broadcast_time) > broadcast_time_sleep:
+                    transforms_stamped = []
+                    for link_cnt, link_name in enumerate(gazebo_links.name):
+                        if model_name == link_name.rpartition('::')[0]:
+                            transform_stamped = geometry_msgs.msg.TransformStamped()
+                            transform_stamped.header.stamp = rospy.Time.now()
+                            transform_stamped.header.frame_id = reference_frame
+                            transform_stamped.child_frame_id = link_name.replace("::", "_")
+                            transform_stamped.transform.translation.x = gazebo_links.pose[link_cnt].position.x
+                            transform_stamped.transform.translation.y = gazebo_links.pose[link_cnt].position.y
+                            transform_stamped.transform.translation.z = gazebo_links.pose[link_cnt].position.z
+                            transform_stamped.transform.rotation = gazebo_links.pose[link_cnt].orientation
+                            transforms_stamped.append(transform_stamped)
+                    tf_broadcaster.sendTransform(transforms_stamped)
+                    prev_broadcast_time = actual_time
             else:
                 rospy.logwarn_throttle(10, "Waiting for \"/gazebo/link_states\" message...")
 
